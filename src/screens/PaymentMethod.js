@@ -1,25 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import paypal from "../images/paypal.png";
 // import creditCard from "../images/credit-card.png";
+import { useNavigate } from "react-router-dom";
 import { savePaymentMethod } from "../actions/cartActions";
+import CheckoutSteps from "../components/CheckoutSteps";
 import Breadcrumbs from "../components/Breadcrumbs";
 
-const PaymentMethods = () => {
+const PaymentMethod = () => {
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const cart = useSelector((state) => state?.cart);
+  const { shippingDetails } = cart;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
+    navigate("/place-order");
   };
+  useEffect(() => {
+    if (!shippingDetails.address) {
+      navigate("/shipping");
+    }
+  });
 
   return (
     <div className="lg:col-span-9 shadow rounded px-6 pt-5 pb-7">
       <Breadcrumbs page="Payment method" />
       <div className="container">
-        {/* <CheckoutSteps step1 step2 step3 /> */}
+        <CheckoutSteps step1 step2 step3 />
         <div className="bg-gray-200 text-black my-4 rounded">
           <p className="px-4 py-3 text-sm font-semibold">
             Select payment method
@@ -62,7 +73,7 @@ const PaymentMethods = () => {
               className="p-2 w-full"
               primary
               onClick={submitHandler}
-              children="Save"
+              children="continue"
             />
           </div>
         </form>
@@ -71,4 +82,4 @@ const PaymentMethods = () => {
   );
 };
 
-export default PaymentMethods;
+export default PaymentMethod;
