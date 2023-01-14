@@ -51,7 +51,7 @@ function App() {
         <Route path="/payment" element={<PaymentMethod />} />
         <Route path="/place-order" element={<Payment />} />
         <Route path="/order/:_id" element={<OrderDetails />} />
-        <Route path="/Terms" element={<TermsCondition />} />
+        <Route path="/terms" element={<TermsCondition />} />
 
 
         <Route element={<PrivateRoute />}>
